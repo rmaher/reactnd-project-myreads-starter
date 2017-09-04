@@ -5,15 +5,8 @@ import './App.css'
 class Books extends Component {
   constructor(props) {
     super(props);
-    if (!Array.isArray(props.book.authors)) {
-      props.book.authors = []
-    }
-    if (!("imageLinks" in props.book)) {
-      props.book.imageLinks = {}
-      props.book.imageLinks.thumbnail = "http://via.placeholder.com/128x193?text=NO-IMAGE"
-    }
     if (props.shelf) {
-      props.book.shelf = this.handleShelf(props.book.id, props.shelf)
+      props.book.shelf = this.changeShelf(props.book.id, props.shelf)
     }
 
     this.state = {
@@ -33,11 +26,11 @@ class Books extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.shelf !== nextProps.shelf) {
-      const actualShelf = this.state.book.shelf
-      const posibleNewShelf = this.handleShelf(this.state.book.id, nextProps.shelf)
-      if (actualShelf !== posibleNewShelf){
+      const currentShelf = this.state.book.shelf
+      const newShelf = this.changeShelf(this.state.book.id, nextProps.shelf)
+      if (currentShelf !== newShelf){
         let newBook = this.state.book
-        newBook.shelf = posibleNewShelf
+        newBook.shelf = newShelf
         this.setState({
           book: newBook
         })
@@ -45,14 +38,14 @@ class Books extends Component {
     }
   }
 
-  handleShelf = (bookID, shelf) => {
-    if (shelf.currentlyReading.indexOf(bookID) >= 0) {
+  handleShelf = (book, shelf) => {
+    if (shelf.currentlyReading.indexOf(book) >= 0) {
       return "currentlyReading"
     }
-    if (shelf.wantToRead.indexOf(bookID) >= 0) {
+    if (shelf.wantToRead.indexOf(book) >= 0) {
       return "wantToRead"
     }
-    if (shelf.read.indexOf(bookID) >= 0) {
+    if (shelf.read.indexOf(book) >= 0) {
       return "read"
     }
     return 'none'

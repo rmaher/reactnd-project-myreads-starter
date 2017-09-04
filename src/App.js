@@ -11,7 +11,6 @@ class BooksApp extends React.Component {
     currentlyReading: [],
     wantToRead: [],
     read: [],
-    none: [],
     shelf: {}
   }
 
@@ -26,10 +25,6 @@ class BooksApp extends React.Component {
       this.setState({ read: data.filter((book) => {
         return book.shelf === 'read'})
       })
-      // this.setState({ none: data.filter((book) => {
-      //   return book.shelf === 'none'})
-      // })
-
 
       if (Object.keys(this.state.shelf).length === 0) {
         this.setState({
